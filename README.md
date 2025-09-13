@@ -199,6 +199,7 @@ O encadeamento de prompts é um padrão que divide tarefas complexas de IA em um
 imagina um assistente de calendário que para funcionar conta com uma cadeia de prompts de 3 etapas com validação:
 
 ```mermaid
+%%{init: {'theme':'neutral'}}%%
 graph LR
     A[User Input] --> B[LLM 1: Extract]
     B --> C{Gate Check}
@@ -238,6 +239,7 @@ de solicitações, mantendo uma separação limpa de responsabilidades.
 entre criação de novo evento e modificação de evento:
 
 ```mermaid
+%%{init: {'theme':'neutral'}}%%
 graph LR
     A[User Input] --> B[LLM Router]
     B --> C{Route}
@@ -262,6 +264,7 @@ A paralelização executa múltiplas chamadas de LLM simultaneamente para valida
 **Exemplo -** ainda no nosso assistente de calendário, imagine que implementamos proteções de validação paralelas:
 
 ```mermaid
+%%{init: {'theme':'neutral'}}%%
 graph LR
     A[User Input] --> B[Calendar Check]
     A --> C[Security Check]
@@ -294,6 +297,7 @@ mantendo processamento especializado.
 padrão de orquestrador para criação de conteúdo:
 
 ```mermaid
+%%{init: {'theme':'neutral'}}%%
 graph LR
     A[Topic Input] --> B[Orchestrator]
     B --> C[Planning Phase]
