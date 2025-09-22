@@ -16,11 +16,11 @@ tools = [
     {
         "type": "function",
         "name": "search_kb",
-        "description": "Search the knowledge base for answers",
+        "description": "Busca informações na base de conhecimento para responder perguntas",
         "parameters": {
             "type": "object",
             "properties": {
-                "question": {"type": "string", "description": "The user's question"},
+                "question": {"type": "string", "description": "A pergunta do usuário"},
             },
             "required": ["question"],
         },
@@ -28,10 +28,10 @@ tools = [
 ]
 
 
-# Response model
+# Modelo de resposta
 class KBResponse(BaseModel):
-    answer: str = Field(description="Answer to the user's question")
-    confidence: str = Field(description="Confidence level: high, medium, or low")
+    answer: str = Field(description="Resposta à pergunta do usuário")
+    confidence: str = Field(description="Nível de confiança: alto, médio ou baixo")
 
 
 def answer_question(question):
@@ -41,20 +41,20 @@ def answer_question(question):
     Se a pergunta não puder ser respondida com a base, informe educadamente.
     """
 
-    # First call to check if model wants to use the tool
+    # Primeira chamada para verificar se o modelo quer usar a ferramenta
     response = client.responses.create(
         model="gpt-4o-mini",
         input=f"{system_prompt}\n\nPergunta: {question}",
         tools=tools,
     )
 
-    # Check for function calls
+    # Verifica se há chamadas de função
     function_calls = [
         output for output in response.output if output.type == "function_call"
     ]
 
     if function_calls:
-        # Get KB data and generate structured response
+        # Obtém dados da base de conhecimento e gera resposta estruturada
         function_call = function_calls[0]
         args = json.loads(function_call.arguments)
         kb_data = search_kb(args.get("question"))
@@ -69,13 +69,13 @@ def answer_question(question):
             Base de conhecimento:
             {json.dumps(kb_data, ensure_ascii=False)}
             """,
-            instructions="Provide structured answer based on KB data",
+            instructions="Forneça uma resposta estruturada baseada nos dados da base de conhecimento",
             text_format=KBResponse,
         )
 
         return final_response.output_parsed
     else:
-        # Direct answer if no tool called
+        # Resposta direta se nenhuma ferramenta foi chamada
         direct_text = next(
             (output.value for output in response.output if hasattr(output, "value")),
             next(
@@ -88,10 +88,10 @@ def answer_question(question):
             ),
         )
 
-        return KBResponse(answer=direct_text, confidence="low")
+        return KBResponse(answer=direct_text, confidence="baixo")
 
 
-# Examples
+# Exemplos
 question1 = "Qual é a política de devoluções da loja?"
 response1 = answer_question(question1)
 print(f"\n----- {question1}")
@@ -103,3 +103,9 @@ response2 = answer_question(question2)
 print(f"\n----- {question2}")
 print(f"Resposta: {response2.answer}")
 print(f"Confiança: {response2.confidence}")
+
+question3 = "Qual a capital da França?"
+response3 = answer_question(question3)
+print(f"\n----- {question3}")
+print(f"Resposta: {response3.answer}")
+print(f"Confiança: {response3.confidence}")

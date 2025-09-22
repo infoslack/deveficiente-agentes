@@ -44,7 +44,8 @@ def roteamento_por_intencao(entrada_usuario: str) -> tuple[str, ClassificacaoInt
 def responder_pergunta(pergunta: str) -> str:
     client = OpenAI()
     response = client.responses.create(
-        model="gpt-4o", input=f"Responda a seguinte pergunta: {pergunta}"
+        model="gpt-4o-mini",
+        input=f"Responda a seguinte pergunta da forma mais simples possível em apenas 1 linha: {pergunta}",
     )
     return response.output_text
 

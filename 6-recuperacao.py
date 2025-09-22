@@ -33,8 +33,8 @@ def inteligencia_resiliente(prompt: str) -> str:
         cidade = dados_pessoa["cidade"]
         if cidade is None:
             raise ValueError("Cidade é None")
-        info_cidade = f"Pessoa mora em {cidade}"
-        return info_cidade
+
+        return f"Contato: {dados_pessoa['nome']} - Telefone: {dados_pessoa['telefone']} - Cidade: {cidade}"
 
     except (KeyError, TypeError, ValueError):
         print("❌ Cidade não disponível, usando informações de fallback...")
@@ -45,7 +45,7 @@ def inteligencia_resiliente(prompt: str) -> str:
 
 if __name__ == "__main__":
     resultado = inteligencia_resiliente(
-        "Meu nome é Maria Silva e meu telefone é (11) 99999-9999"
+        "Meu nome é Alberto Souza e meu telefone é (11) 99999-9999"
     )
     print("Resultado com Recuperação:")
     print(resultado)

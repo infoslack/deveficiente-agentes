@@ -7,22 +7,35 @@ para decisões de risco ou julgamentos complexos.
 from openai import OpenAI
 
 
-def obter_aprovacao_humana(conteudo: str) -> bool:
+def obter_aprovacao_humana(conteudo: str) -> str:
     print(f"Conteúdo gerado:\n{conteudo}\n")
-    resposta = input("Aprovar isso? (s/n): ")
-    return resposta.lower().startswith("s")
+    resposta = input("Aprovar (s), Refazer (r) ou Cancelar (n): ")
+
+    if resposta.lower().startswith("s"):
+        return "aprovado"
+    elif resposta.lower().startswith("r"):
+        return "refazer"
+    else:
+        return "cancelado"
 
 
 def inteligencia_com_feedback_humano(prompt: str) -> None:
     client = OpenAI()
 
-    response = client.responses.create(model="gpt-4o-mini", input=prompt)
-    rascunho_resposta = response.output_text
+    while True:
+        response = client.responses.create(model="gpt-4o-mini", input=prompt)
+        rascunho_resposta = response.output_text
 
-    if obter_aprovacao_humana(rascunho_resposta):
-        print("Resposta final aprovada")
-    else:
-        print("Resposta não aprovada")
+        decisao = obter_aprovacao_humana(rascunho_resposta)
+
+        if decisao == "aprovado":
+            print("Resposta final aprovada")
+            break
+        elif decisao == "cancelado":
+            print("Resposta não aprovada")
+            break
+        # Se "refazer", continua o loop
+        print("Gerando nova versão...\n")
 
 
 if __name__ == "__main__":

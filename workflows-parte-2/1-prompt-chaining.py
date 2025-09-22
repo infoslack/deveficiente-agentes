@@ -154,9 +154,7 @@ else:
 
 print("\n" + "=" * 50 + "\n")
 
-entrada_usuario = (
-    "Você pode enviar um e-mail para Alice e Bob para discutir o roteiro do projeto?"
-)
+entrada_usuario = "Você pode enviar um e-mail para Daniel e Alberto para discutir o roteiro do projeto?"
 
 resultado = processar_solicitacao_calendario(entrada_usuario)
 if resultado:

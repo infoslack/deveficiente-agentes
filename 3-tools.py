@@ -19,12 +19,6 @@ def obter_cotacao_acao(simbolo: str) -> str:
     return f"{nome} ({simbolo}): ${preco:.2f}"
 
 
-def chamar_funcao(nome: str, argumentos: dict) -> str:
-    if nome == "obter_cotacao_acao":
-        return obter_cotacao_acao(**argumentos)
-    raise ValueError(f"Função desconhecida: {nome}")
-
-
 def inteligencia_com_ferramentas(prompt: str) -> str:
     client = OpenAI()
 
@@ -59,7 +53,11 @@ def inteligencia_com_ferramentas(prompt: str) -> str:
         if tool_call.type == "function_call":
             nome = tool_call.name
             argumentos = json.loads(tool_call.arguments)
-            resultado = chamar_funcao(nome, argumentos)
+
+            if nome == "obter_cotacao_acao":
+                resultado = obter_cotacao_acao(**argumentos)
+            else:
+                raise ValueError(f"Função desconhecida: {nome}")
 
             # Adiciona chamada e resultado no histórico
             mensagens.append(tool_call)

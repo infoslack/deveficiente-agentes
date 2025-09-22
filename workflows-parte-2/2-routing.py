@@ -167,9 +167,7 @@ def processar_solicitacao_calendario(
 # Passo 3: Testar com novo evento
 # --------------------------------------------------------------
 
-entrada_novo_evento = (
-    "Vamos agendar uma reunião de equipe na próxima terça-feira às 14h com Alice e Bob"
-)
+entrada_novo_evento = "Vamos agendar uma reunião de equipe na próxima terça-feira às 14h com Daniel e Alberto"
 resultado = processar_solicitacao_calendario(entrada_novo_evento)
 if resultado:
     print(f"Resposta: {resultado.mensagem}")
@@ -183,7 +181,7 @@ print("\n" + "=" * 50 + "\n")
 # --------------------------------------------------------------
 
 entrada_modificar_evento = (
-    "Você pode mover a reunião de equipe com Alice e Bob para quarta-feira às 15h?"
+    "Você pode mover a reunião de equipe com Daniel e Alberto para quarta-feira às 15h?"
 )
 resultado = processar_solicitacao_calendario(entrada_modificar_evento)
 if resultado:
